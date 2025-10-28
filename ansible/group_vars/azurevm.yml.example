@@ -1,0 +1,3 @@
+ansible_user: <ADMIN_USERNAME>
+ansible_password: <ADMIN_PASSWORD>
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no'

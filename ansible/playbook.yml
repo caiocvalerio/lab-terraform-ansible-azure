@@ -1,0 +1,40 @@
+---
+- name: Configurar Azure VM para rodar o projeto spring boot
+  hosts: azurevm
+  become: true
+  tasks:
+    - name: Atualizar lista de pacotes
+      ansible.builtin.apt:
+        update_cache: yes
+    
+    - name: Instalar o Docker (docker.io)
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+    
+    - name: Instalar a biblioteca Python do Docker
+      ansible.builtin.apt:
+        name: python3-docker
+        state: present
+    
+    - name: Copiar o arquivo da imagem (.tar) para a VM
+      ansible.builtin.copy:
+        src: ../app-spring-image.tar 
+        dest: /tmp/app-image.tar
+    
+    - name: Carregar a imagem do arquivo (.tar) para o Docker da VM
+      community.docker.docker_image:
+        name: app-spring
+        load_path: /tmp/app-image.tar
+        source: load
+    
+    - name: Executar o container da aplicação
+      community.docker.docker_container:
+        name: springboot-app
+        image: app-spring
+        state: started
+        pull: no
+        restart_policy: always
+        ports:
+          - "8080:8080"
+
