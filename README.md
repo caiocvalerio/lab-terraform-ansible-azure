@@ -16,7 +16,7 @@ O objetivo é provisionar a infraestrutura na **Azure** usando **Terraform** e, 
 
 ## 🏗️ Visão Geral da Arquitetura
 
-Este projeto divide o processo de deploy em duas fases principais: a **Preparação Local** (onde construímos o nosso "pacote" de software) e o **Deploy na Nuvem** (onde usamos automação para construir a infraestrutura e instalar o pacote).
+Este projeto divide o processo de deploy em três fases principais: a **Preparação Local** (onde construímos o nosso "pacote" de software), o **Deploy na Nuvem** (onde usamos automação para construir a infraestrutura e instalar o pacote) e o **Resultado Final** (onde acessamos a aplicação).
 
 ### 📦 Fase 1: Preparação Local
 
