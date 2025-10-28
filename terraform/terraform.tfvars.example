@@ -1,0 +1,4 @@
+azure_subscription_id = <AZURE_ID>
+resource_group_name   = <RESOURCE_GROUP_NAME>
+admin_usr             = <ADMIN_USERNAME>
+admin_pwd             = <ADMIN_PASSWORD>
