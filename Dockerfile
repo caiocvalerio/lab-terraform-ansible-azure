@@ -6,7 +6,7 @@ RUN mvn dependency:go-offline
 COPY hwa/src/ ./src
 RUN mvn clean install -DskipTests
 
-FROM eclipse-temurin:21.0.8_9-jre-jammy AS final
+FROM eclipse-temurin:21.0.8_9-jre-alpine AS final
 WORKDIR /opt/app
 EXPOSE 8080
 COPY --from=builder /opt/app/target/*.jar app.jar
