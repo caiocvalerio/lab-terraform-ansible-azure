@@ -1,14 +1,13 @@
 FROM eclipse-temurin:21.0.8_9-jdk-jammy AS builder
-WORKDIR /builder
-ARG JAR_FILE=hwa/target/*.jar
-COPY ${JAR_FILE} app.jar
-RUN java -Djarmode=tools -jar app.jar extract --layers --destination extracted
+WORKDIR /opt/app
+RUN apt-get update && apt-get install -y maven
+COPY hwa/pom.xml .
+RUN mvn dependency:go-offline
+COPY hwa/src/ ./src
+RUN mvn clean install -DskipTests
 
-FROM eclipse-temurin:21.0.8_9-jdk-jammy AS runner
-WORKDIR /app
-ARG BUILDER_PATH=/builder/extracted
-COPY --from=builder ${BUILDER_PATH}/dependencies/ ./
-COPY --from=builder ${BUILDER_PATH}/spring-boot-loader/ ./
-COPY --from=builder ${BUILDER_PATH}/snapshot-dependencies/ ./
-COPY --from=builder ${BUILDER_PATH}/application/ ./
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+FROM eclipse-temurin:21.0.8_9-jre-jammy AS final
+WORKDIR /opt/app
+EXPOSE 8080
+COPY --from=builder /opt/app/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
